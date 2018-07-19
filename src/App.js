@@ -1,47 +1,35 @@
 // jsxをトランスパイルするのに使うために
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+
 
 // 関数をただ定義しただけで関数Componentになる
-const App = () => {
-    const profiles = [
-        {
-            name: 'Jim',
-            age: 25,
-        },
-        {
-            name: 'Jon',
-            age: 20,
-        },
-        {
-            name: 'NoName'
-        }
-    ];
+const App = () => (<Counter></Counter>)
 
-    return (
-        <div>
-            {
-                profiles.map((profile, index) => { // mapで回して、Userにpropsを与え生成されt部分的なHTMLを複数返す
-                    return <User name={profile.name} age={profile.age} key={index}/>
-                })
-            }
-        </div>
-    )
-};
+class Counter extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {count: 0}
+    }
 
-const User = (props) => {
-    return <div>Hi! Iam {props.name}, and {props.age} years old!</div>
-};
+    handlePlusButton = () => {
+        // setState を実行すると、setStateが実行される
+        this.setState({count: this.state.count + 1});
+    };
 
-// propsの値が存在しなかった場合のデフォルトの値を設定しておく
-User.defaultProps = {
-    age: 1
-};
+    handleMinusButton = () => {
+        this.setState({count: this.state.count - 1})
+    };
 
-User.propTypes = {
-    name: PropTypes.string.isRequired,
-    age: PropTypes.number
-
+    render() {
+        return (
+            <React.Fragment>
+                <div>count: {this.state.count}</div>
+                <button onClick={this.handlePlusButton}>+1</button>
+                <button onClick={this.handleMinusButton}>-1</button>
+            </React.Fragment>
+        )
+    }
 }
+
 
 export default App;
