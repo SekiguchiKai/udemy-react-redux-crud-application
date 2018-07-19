@@ -1,5 +1,6 @@
 // jsxをトランスパイルするのに使うために
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 // 関数をただ定義しただけで関数Componentになる
 const App = () => {
@@ -20,7 +21,7 @@ const App = () => {
     return (
         <div>
             {
-                profiles.map((profile, index) => {
+                profiles.map((profile, index) => { // mapで回して、Userにpropsを与え生成されt部分的なHTMLを複数返す
                     return <User name={profile.name} age={profile.age} key={index}/>
                 })
             }
@@ -36,5 +37,11 @@ const User = (props) => {
 User.defaultProps = {
     age: 1
 };
+
+User.propTypes = {
+    name: PropTypes.string.isRequired,
+    age: PropTypes.number
+
+}
 
 export default App;
