@@ -1,35 +1,32 @@
 // jsxをトランスパイルするのに使うために
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {increment, decrement} from '../actions';
 
 
-// 関数をただ定義しただけで関数Componentになる
-const App = () => (<Counter></Counter>)
-
-class Counter extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {count: 0}
-    }
-
-    handlePlusButton = () => {
-        // setState を実行すると、setStateが実行される
-        this.setState({count: this.state.count + 1});
-    };
-
-    handleMinusButton = () => {
-        this.setState({count: this.state.count - 1})
-    };
-
+class App extends Component {
     render() {
+        const props = this.props;
+
         return (
             <React.Fragment>
-                <div>count: {this.state.count}</div>
-                <button onClick={this.handlePlusButton}>+1</button>
-                <button onClick={this.handleMinusButton}>-1</button>
+                <div>count: {props.value}</div>
+                <button onClick={props.increment}>+1</button>
+                <button onClick={props.decrement}>-1</button>
             </React.Fragment>
         )
     }
 }
 
+// stateから、このComponentのpropsにマッピングする
+const mapStateToProps = state => ({value: state.count.value});
 
-export default App;
+// アクションが発生した時にreducerにtypeに応じた状態遷移を実行させる
+const mapDispatchToProps = dispatch => ({
+    increment: ()=> dispatch(increment()),
+    decrement : () => dispatch(decrement())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+
